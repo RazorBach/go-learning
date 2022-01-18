@@ -84,7 +84,6 @@ func master(ch chan []string, fetcher Fetcher) {
 			}
 		}
 		n -= 1
-		fmt.Println(n)
 		if n == 0 {
 			break
 		}
@@ -100,12 +99,16 @@ func ConcurrentChannel(url string, fetcher Fetcher) {
 }
 
 func main() {
+	fmt.Println("--------Normal Crawl--------")
+	Crawl("https://golang.org/", 4, fetcher)
 
-	//Crawl("https://golang.org/", 4, fetcher)
+	fmt.Println("\n\n")
+	fmt.Println("--------Concurrent Crawl w/ WaitGroup--------")
+	var visited sync.Map
+	MyCrawl("https://golang.org/", fetcher, visited)
 
-	//var visited sync.Map
-	//MyCrawl("https://golang.org/", fetcher, visited)
-
+	fmt.Println("\n\n")
+	fmt.Println("--------Concurrent Crawl w/ Channel--------")
 	ConcurrentChannel("https://golang.org/", fetcher)
 }
 
